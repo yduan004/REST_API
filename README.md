@@ -1,7 +1,7 @@
 # Backend REST API
 ## Installation
 ```
-
+git clone https://github.com/yduan004/REST_API.git
 pip install -r requirements.txt
 python app.py
 ```
