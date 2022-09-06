@@ -12,7 +12,7 @@ The resources are stored in SQLite database by using SQLAlchemy. Postman can be 
 
 ## Deployment
 ### On Heroku
-This API service is deployed on Heroku at [https://rest-api-s.herokuapp.com/](https://rest-api-s.herokuapp.com/). Use Postman to test the API.
+This API service is deployed on Heroku at [https://rest-api-s.herokuapp.com/](https://rest-api-s.herokuapp.com/). Use Postman to test the API. The supported endpoints are `GET /items`, `GET /stores`, `POST /login`, `POST /register`, `GET /item/<name>`, `GET /store/<name>`, `POST /item/<name>`, `POST /store/<name>`, `PUT /item/<name>`, `DEL /item/<name>`, `DEL /store/<name>`.
 
 ### Run as Docker Image
 ```
