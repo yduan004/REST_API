@@ -1,7 +1,8 @@
 # Backend REST API
 ## Installation
 ```
-pip install Flask
+
+pip install -r requirements.txt
 python app.py
 ```
 
