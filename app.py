@@ -1,3 +1,4 @@
+import os
 from flask import Flask, jsonify, request, render_template
 from flask_restful import Api
 from flask_jwt_extended import JWTManager
