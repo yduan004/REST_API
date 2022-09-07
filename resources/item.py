@@ -1,5 +1,5 @@
 # import sqlite3
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import jwt_required, get_jwt, get_jwt_identity
 from flask_restful import Resource, reqparse
 from models.item import ItemModel
 
@@ -21,8 +21,11 @@ class Item(Resource):
         # item = next(filter(lambda x: x['name'] == name, items), None)
         # return {'item': item}, 200 if item else 404
         item = ItemModel.find_by_name(name)
-        return item.json() if item else {'message': 'Item not found'}, 404
+        if item: 
+            return item.json()
+        return {'message': 'Item not found'}, 404
 
+    @jwt_required(fresh=True)
     def post(self, name):
         # if next(filter(lambda x: x['name'] == name, items), None):
         if ItemModel.find_by_name(name):
@@ -38,6 +41,7 @@ class Item(Resource):
             return {'message': 'An error occurred inserting the item.'}, 500 # Internal Server Error
         return item.json(), 201 # create
 
+    @jwt_required()
     def delete(self, name):
         # global items
         # items = list(filter(lambda x: x['name'] != name, items))
@@ -49,10 +53,15 @@ class Item(Resource):
         # connection.commit()
         # connection.close()
         # return {'message': 'Item deleted'}
+        claims = get_jwt()
+        if not claims['is_admin']:
+            return {'message': 'Admin privilege required.'}, 401
+
         item = ItemModel.find_by_name(name)
         if item:
             item.delete_from_db()
-        return {'message': 'Item deleted'}
+            return {'message': 'Item delted.'}
+        return {'message': 'Item not found'}, 404
 
     def put(self, name):
         # data = request.get_json()
@@ -86,7 +95,16 @@ class Item(Resource):
 
 
 class ItemList(Resource):
+    @jwt_required(optional=True)
     def get(self):
+        user_id = get_jwt_identity()
+        items = [item.json() for item in ItemModel.find_all()]
+        if user_id:
+            return {'items': items}, 200
+        return {
+            'items': [item['name'] for item in items],
+            'message': 'More data available if you log in.'
+        }, 200
         # return {'items': items}
         # connection = sqlite3.connect('data.db')
         # cursor = connection.cursor()
@@ -97,5 +115,4 @@ class ItemList(Resource):
         #     items.append({'name': row[0], 'price': row[1]})
         # connection.close()
         # return {'items': items}
-        return {'items': [item.json() for item in ItemModel.query.all()]}
         # return {'items': list(map(lambda x: x.json(), ItemModel.query.all()))}
