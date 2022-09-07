@@ -1,13 +1,12 @@
-import os
 from flask import Flask, jsonify, request, render_template
 from flask_restful import Api
-from flask_jwt_extended import JWTManager, get_jwt_identity, jwt_required
-from blacklist import BLACKLIST
+from flask_jwt_extended import JWTManager
 
+from db import db
+from blacklist import BLACKLIST
 from resources.user import UserRegister, UserLogin, UserLogout, User, TokenRefresh
 from resources.item import Item, ItemList
 from resources.store import Store, StoreList
-from blacklist import BLACKLIST
 
 app = Flask(__name__)
 uri = os.getenv("DATABASE_URL")  # or other relevant config var
@@ -147,6 +146,5 @@ def get_item_in_store(name):
     return jsonify({'message': 'store not found!'}) 
 
 if __name__ == '__main__':
-    from db import db
     db.init_app(app)
     app.run(port=5000, debug=True)

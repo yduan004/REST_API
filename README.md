@@ -7,7 +7,7 @@ python app.py
 ```
 
 ## Description
-This project is implemented using Flask, and is a REST API for a store with authentication. It can be modified to be a REST API for any type of applications such as managing lab protocals with CRUD operations. 
+This is a REST API implemented using Flask and popular extension Flask-RESTful. It allows users register and log in, as well as create stores and items with authentication. It can be modified to be a REST API for any type of applications such as managing lab protocals with CRUD operations. 
 
 The resources are stored in SQLite database by using SQLAlchemy. Postman can be used to do automated testing of the API by writing pre-request scripts and test scripts and running the ordred requests/workflow. It also added abuse prevention and manage user logout by using JWT blocklist to revoke access token.
 
